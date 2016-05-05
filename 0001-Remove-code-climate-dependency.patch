@@ -1,0 +1,27 @@
+From 9825ea36e5a9acc403671383ac319956d01bc683 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Martin=20M=C3=A1gr?= <mmagr@redhat.com>
+Date: Thu, 5 May 2016 10:51:05 +0200
+Subject: [PATCH] Remove code-climate dependency
+
+---
+ spec/helpers.rb | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/spec/helpers.rb b/spec/helpers.rb
+index 29e1000..25df058 100644
+--- a/spec/helpers.rb
++++ b/spec/helpers.rb
+@@ -2,10 +2,6 @@ require "rspec"
+ require "eventmachine"
+ require "sensu/redis/client"
+ 
+-unless RUBY_VERSION < "1.9" || RUBY_PLATFORM =~ /java/
+-  require "codeclimate-test-reporter"
+-  CodeClimate::TestReporter.start
+-end
+ 
+ module Helpers
+   def timer(delay, &callback)
+-- 
+2.4.11
+
