@@ -3,7 +3,7 @@
 
 Name:           rubygem-%{gem_name}
 Version:        1.3.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        The Sensu Redis client library
 Group:          Development/Languages
 License:        MIT
@@ -18,6 +18,12 @@ BuildRequires:  rubygem(eventmachine)
 #BuildRequires:  rubygem(rspec)
 #BuildRequires: rubygem(codeclimate-test-reporter)
 BuildArch:      noarch
+
+Requires:       rubygem(eventmachine)
+
+%if 0%{?rhel} > 0
+Provides: rubygem(%{gem_name}) = %{version}
+%endif
 
 %description
 The Sensu Redis client library.
@@ -78,5 +84,9 @@ popd
 %{gem_instdir}/spec
 
 %changelog
+* Mon May 09 2016 Martin Mágr <mmagr@redhat.com> - 1.3.0-2
+- Explicitly list provides for RHEL
+- Add missing runtime dependency
+
 * Wed May 04 2016 Martin Mágr <mmagr@redhat.com> - 1.3.0-1
 - Initial package
