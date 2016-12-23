@@ -2,21 +2,20 @@
 %global gem_name sensu-redis
 
 Name:           rubygem-%{gem_name}
-Version:        1.3.0
+Version:        2.1.0
 Release:        2%{?dist}
 Summary:        The Sensu Redis client library
 Group:          Development/Languages
 License:        MIT
 URL:            https://github.com/sensu/sensu-redis
 Source0:        https://rubygems.org/gems/%{gem_name}-%{version}.gem
-Patch0:         0001-Remove-code-climate-dependency.patch
+#Source1:        https://github.com/sensu/%{gem_name}/archive/v%{version}.tar.gz#/%{gem_name}-%{version}.tar.gz
 
 BuildRequires:  ruby(release)
 BuildRequires:  rubygems-devel
 BuildRequires:  ruby
 BuildRequires:  rubygem(eventmachine)
 #BuildRequires:  rubygem(rspec)
-#BuildRequires: rubygem(codeclimate-test-reporter)
 BuildArch:      noarch
 
 Requires:       rubygem(eventmachine)
@@ -42,7 +41,6 @@ Documentation for %{name}.
 gem unpack %{SOURCE0}
 %setup -q -D -T -n  %{gem_name}-%{version}
 gem spec %{SOURCE0} -l --ruby > %{gem_name}.gemspec
-%patch0 -p1
 
 %build
 # Create the gem as gem install only works on a gem file
@@ -57,6 +55,8 @@ mkdir -p %{buildroot}%{gem_dir}
 cp -a .%{gem_dir}/* \
         %{buildroot}%{gem_dir}/
 
+#install -d -p %{_builddir}%{gem_instdir}
+#tar -xvzf %{SOURCE1} -C %{_builddir}/%{gem_name}-%{version}/%{gem_instdir} --strip-components=1 %{gem_name}-%{version}/spec
 
 # Run the test suite
 %check
@@ -67,23 +67,20 @@ popd
 
 %files
 %dir %{gem_instdir}
-%exclude %{gem_instdir}/.gitignore
-%exclude %{gem_instdir}/.travis.yml
 %license %{gem_instdir}/LICENSE.txt
-%{gem_instdir}/bin
 %{gem_libdir}
 %exclude %{gem_cache}
 %{gem_spec}
 
 %files doc
 %doc %{gem_docdir}
-%{gem_instdir}/Gemfile
 %doc %{gem_instdir}/README.md
-%{gem_instdir}/Rakefile
 %{gem_instdir}/sensu-redis.gemspec
-%{gem_instdir}/spec
 
 %changelog
+* Fri Dec 23 2016 Martin Mágr <mmagr@redhat.com> - 2.1.0-1
+- Update to latest upstream release
+
 * Mon May 09 2016 Martin Mágr <mmagr@redhat.com> - 1.3.0-2
 - Explicitly list provides for RHEL
 - Add missing runtime dependency
